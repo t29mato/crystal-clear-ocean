@@ -2,12 +2,29 @@
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "test-watch-coverage": "jest --watch --coverage",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
+  },
+  "jest": {
+    "moduleFileExtensions": ["ts", "js"],
+    "transform": {
+      ".+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/test/*.test.ts"
+    ]
   },
   "engines": {
     "node": "8"
@@ -18,9 +35,12 @@
     "firebase-functions": "^3.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "firebase-functions-test": "^0.1.6",
+    "jest": "^25.2.7",
+    "ts-jest": "^25.3.1",
     "tslint": "^5.12.0",
-    "typescript": "^3.2.2",
-    "firebase-functions-test": "^0.1.6"
+    "typescript": "^3.2.2"
   },
   "private": true
 }
