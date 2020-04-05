@@ -1,5 +1,32 @@
 import * as client from 'cheerio-httpcli'
 import * as moment from 'moment'
+import * as admin from 'firebase-admin'
+const serviceAccount = require('../crystal-clear-ocean-firebase-adminsdk-z5i86-41a79ac5c6.json')
+
+export const crawl = () => {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://crystal-clear-water.firebaseio.com"
+    });
+    let db = admin.firestore()
+    let izuOceanParkRef = db.collection('izuOceanPark');
+    const data = extract('https://iop-dc.com/')
+
+    izuOceanParkRef.doc().set({hoge: 'hoge'})
+
+    izuOceanParkRef.where('measured_at', '==', data.measured_at).get()
+        .then(snapshot => {
+            if (!snapshot) {
+                console.log('新規データにつき挿入')
+                izuOceanParkRef.doc().set(data)
+            } else {
+                console.log('データ重複につき何もしない')
+            }
+        })
+        .catch(err => {
+            console.log('Error getting documents', err)
+        })
+}
 
 export const extract = (url: string) => {
     const res = client.fetchSync(url, 'utf8')
