@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as izuOceanParkService  from './izuOceanParkService'
 
-export const izuOceanPark = functions.pubsub.schedule('every 1 minutes').onRun(context => {
-    console.log('Hello from Pubsub!')
+export const izuOceanPark = functions.https.onRequest((request, response) => {
     izuOceanParkService.crawl()
+    response.send("Hello from Firebase!");
     return null
 });

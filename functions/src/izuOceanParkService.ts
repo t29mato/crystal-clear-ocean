@@ -6,17 +6,15 @@ const serviceAccount = require('../crystal-clear-ocean-firebase-adminsdk-z5i86-4
 export const crawl = () => {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://crystal-clear-water.firebaseio.com"
+        databaseURL: "https://crystal-clear-ocean.firebaseio.com"
     });
     let db = admin.firestore()
     let izuOceanParkRef = db.collection('izuOceanPark');
     const data = extract('https://iop-dc.com/')
 
-    izuOceanParkRef.doc().set({hoge: 'hoge'})
-
     izuOceanParkRef.where('measured_at', '==', data.measured_at).get()
         .then(snapshot => {
-            if (!snapshot) {
+            if (snapshot.empty) {
                 console.log('新規データにつき挿入')
                 izuOceanParkRef.doc().set(data)
             } else {
