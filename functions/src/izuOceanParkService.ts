@@ -8,8 +8,8 @@ export const crawl = () => {
         credential: admin.credential.cert(serviceAccount),
         databaseURL: "https://crystal-clear-ocean.firebaseio.com"
     });
-    let db = admin.firestore()
-    let izuOceanParkRef = db.collection('izuOceanPark');
+    const db = admin.firestore()
+    const izuOceanParkRef = db.collection('izuOceanPark');
     const data = extract('https://iop-dc.com/')
 
     izuOceanParkRef.where('measured_at', '==', data.measured_at).get()
@@ -17,6 +17,7 @@ export const crawl = () => {
             if (snapshot.empty) {
                 console.log('新規データにつき挿入')
                 izuOceanParkRef.doc().set(data)
+                    .catch(err => console.log('Error getting set documents', err))
             } else {
                 console.log('データ重複につき何もしない')
             }
@@ -74,7 +75,7 @@ const extractDate = (source: String) => {
     })
     const [month, date, hour] = time
     const minute = time[3] && time[3]
-    let result = moment(moment().year() + '-01-01') // 年だけ指定したい
+    const result = moment(moment().year() + '-01-01') // 年だけ指定したい
         .month(month-1)
         .date(date)
         .hour(hour)
