@@ -48,7 +48,7 @@
     "firebase-functions-test": "^0.1.6",
     "http-serve": "^1.0.1",
     "jest": "^25.2.7",
-    "ts-jest": "^25.3.1",
+    "ts-jest": "^25.3.2",
     "ts-node": "^8.8.1",
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
