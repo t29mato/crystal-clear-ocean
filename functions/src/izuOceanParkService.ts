@@ -53,11 +53,17 @@ const extractClearness = (html: String) => {
         })
         return parseInt(number.toString().replace(',', ''))
     })
-    return clearness
+    // 昨日　浅場3ｍ~　砂地10～15ｍ という場合は値が3つになるので先頭と終わりを取得する
+    if (clearness.length > 2) {
+        return [clearness[0], clearness[clearness.length-1]]
+    } else {
+        return clearness
+    }
 }
 
 const extractDate = (html: String) => {
     const temp = html.match(/[０-９0-9]{1,2}/g)
+    if (!temp || temp.length < 2) {
         console.error(temp)
         throw new Error('IOPのデータ抽出失敗');
     }
@@ -72,12 +78,13 @@ const extractDate = (html: String) => {
         })
         return parseInt(number.toString().replace(',', ''))
     })
-    const [month, date, hour] = time
+    const [month, date] = time
+    const hour = time[2] && time[2]
     const minute = time[3] && time[3]
     const result = moment(moment().year() + '-01-01') // 年だけ指定したい
         .month(month-1)
         .date(date)
-        .hour(hour)
+    hour && result.hour(hour)
     minute && result.minute(minute)
     return result.format()
 }

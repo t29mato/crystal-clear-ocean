@@ -9,3 +9,8 @@ test('20200405の透明度取得', () => {
     const clearness = izuOceanParkService.extract('https://crystal-clear-ocean.web.app/test/izuOceanPark/20200405.html');
     expect(clearness).toStrictEqual({"values": [10],"measured_at": "2020-04-05T07:30:00+09:00"})
 })
+
+test('20200714の透明度取得', () => {
+    const clearness = izuOceanParkService.extract('https://crystal-clear-ocean.web.app/test/izuOceanPark/20200714.html');
+    expect(clearness).toStrictEqual({"values": [3, 15],"measured_at": "2020-07-14T00:00:00+09:00"})
+})
