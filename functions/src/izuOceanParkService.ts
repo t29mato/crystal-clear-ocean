@@ -3,6 +3,30 @@ import * as moment from 'moment'
 import * as admin from 'firebase-admin'
 const serviceAccount = require('../crystal-clear-ocean-firebase-adminsdk-z5i86-41a79ac5c6.json')
 
+export const get = async () => {
+    if (!admin.apps.length) {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://crystal-clear-ocean.firebaseio.com"
+        });
+    }
+    const db = admin.firestore()
+    const izuOceanParkRef = db.collection('izuOceanPark');
+    try {
+        const docs = await izuOceanParkRef.get()
+        let result: any = [];
+        docs.forEach(doc => {
+            result.push({
+                visibilities: doc.get('values'),
+                measured_at: doc.get('measured_at'),
+            })
+        });
+        return result
+    } catch (err) {
+        console.error('Error getting documents', err)
+    }
+}
+
 export const crawl = () => {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
@@ -23,7 +47,7 @@ export const crawl = () => {
             }
         })
         .catch(err => {
-            console.log('Error getting documents', err)
+            console.error('Error getting documents', err)
         })
 }
 
