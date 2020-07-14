@@ -37,8 +37,8 @@ export const extract = (url: string) => {
     }
 }
 
-const extractClearness = (source: String) => {
-    const temp = source.match(/[０-９0-9]{1,2}/g)
+const extractClearness = (html: String) => {
+    const temp = html.match(/[０-９0-9]{1,2}/g)
     if (!temp) {
         console.error(temp)
         throw new Error('IOPの透明度抽出失敗');
@@ -56,9 +56,8 @@ const extractClearness = (source: String) => {
     return clearness
 }
 
-const extractDate = (source: String) => {
-    const temp = source.match(/[０-９0-9]{1,2}/g)
-    if (!temp || temp.length < 3) {
+const extractDate = (html: String) => {
+    const temp = html.match(/[０-９0-9]{1,2}/g)
         console.error(temp)
         throw new Error('IOPのデータ抽出失敗');
     }
