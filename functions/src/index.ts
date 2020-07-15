@@ -12,4 +12,7 @@ export const getIzuOceanPark = functions.region('asia-northeast1').https.onReque
         .then(data => {
             response.json({data: data})
         })
+        .catch(err => {
+            console.error('伊豆海洋公園のデータ取得に失敗', err)
+        })
 })
